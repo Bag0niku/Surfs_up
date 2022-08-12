@@ -45,17 +45,25 @@ def welcome():
 def spam():
     return "Hi"
 
-@app.route("/precipitation")
+@app.route("/api/v1.0/precipitation")
 def prcp():
-    return str(hello_list)
+    last_year = dt.datetime(2017, 8, 23) - dt.timedelta(days=365)
+    rain_last_year = session.query(Measurement.date, Measurement.prcp).filter(Measurement.date>=last_year).all()
+    rain = {date:prcp for date, prcp in rain_last_year}
+    return jsonify(rain)
 
-@app.route("/stations")
+@app.route("/api/v1.0/stations")
 def station():
-    return jsonify(hello_list)
+    results = session.query(Station.station).all()
+    stations = list(np.ravel(results))
+    return jsonify(stations=stations)
 
-@app.route("/temperature")
+@app.route("/api/v1.0/temperature")
 def temperature():
-    return hello_dict
+    last_year = dt.datetime(2017, 8,23) - dt.timedelta(days=365)
+    temps_last_year = session.query(Measurement.date, Measurement.tobs).filter(Measurement.date>= last_year).filter(Measurement.station == 'USC00519281').all()
+    temps = {date:temp for date, temp in temps_last_year} 
+    return jsonify(temps = temps)
 
 if __name__ == "__main__":
     app.run(debug=True)

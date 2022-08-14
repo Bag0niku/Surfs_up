@@ -9,7 +9,7 @@ Analysis of weather in Hawaii
   - Jupyter notebook (notebook server 6.4.8, Ipython 7.31.1)
 
 ## Flask API
-hawaii.sqlite contains temperature and precipitation data for 9 weather stations across the island of Ouahu, Hawaii from January 1, 2010 to August 23, 2017.  I took my initial data exploration and analysis from the climate_analysis.ipynb file and turned it into an API with python's Flask framework.
+hawaii.sqlite contains temperature and precipitation data for 9 weather stations across the island of Ouahu, Hawaii from January 1, 2010 to August 23, 2017.  I took my initial data exploration and analysis from the climate_analysis.ipynb file and turned it into an API with python's Flask framework. If you have Flask installed you can run app.py to see the API.
 
 ## Challenge
 While Most of the analysis was conducted only on the last year of available data. I did combine every month of june into it's own table and did the same with December. Comparing the two months together the first point noticed is that there is not much difference between the 2. 

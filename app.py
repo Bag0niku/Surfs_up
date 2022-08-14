@@ -69,28 +69,21 @@ def station():
 def temp():
     last_year = dt.datetime(2017, 8, 23) - dt.timedelta(days=365)
     temps_last_year = session.query(Measurement.date, Measurement.tobs).filter(Measurement.date>=last_year).all()
-    temps = {date:temp for date, temp in rain_last_year}
-    return jsonify(rain)
+    temps = {date:temp for date, temp in temps_last_year}
+    return jsonify(temps)
 
 
 
 @app.route("/api/v1.0/temp/<start>/<end>")
 def temp_stats(start, end):
-    select = [func.min(Measurement.tobs), func.max(Measurement.tobs), func.avg(Measurement.tobs) ]
+    select = [func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)]
     last_year = dt.datetime(2017, 8,23) - dt.timedelta(days=365)
-    if end is False:
+    if (start is False) and (end is False):
+        return "Dates are needed to see the temperature statistics." 
+    elif end is False:
         results = session.query(*select).filter(Measurement.date>=start).all()
-    # if (start and end) != None:
-    #     s = f"\n  start and end  ||  START = {type(start)}  || END = {type(end)}"
-    # elif start and not end:
-    #     s = f"\n  Start only  ||  START = {type(start)}  || END = {type(end)}"
-    # elif end and not start:
-    #     s = f"\n  End only  ||  START = {type(start)}  || END = {type(end)}"  
     else: 
-        # s = f"\n  No Start or End  ||  START = {type(start)}  || END = {type(end)}"
-        # temps_last_year = session.query(*select).filter(Measurement.date>= last_year).filter(Measurement.station == 'USC00519281').all()
         results = session.query(*select).filter(Measurement.date>=start).filter(Measurement.date<=end).all()
-    # temps = [row for row in spam]
     temps = list(np.ravel(results))
     return jsonify(temps=temps)#, info=s)
 

@@ -18,3 +18,4 @@ While Most of the analysis was conducted only on the last year of available data
    - The average is 3 degrees apart.
  - December termperatures have a wider range with a minimum of 56 instaed of June's 64.
  After graphing them it is easier to see that average daily temperature is about 5 degrees cooler in December than June.
+ - The rain data is eerily similar in June and December aswell.

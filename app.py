@@ -1,4 +1,5 @@
 import datetime as dt
+from statistics import mean
 import numpy as np
 import pandas as pd
 
@@ -33,11 +34,17 @@ hello_dict = {"Hello": "World!"}
 def welcome():
     return (""" 
     <h1>Welcome to the Climate Analysis of Ouahu, Hawaii API! </h1>
-    <p>Available routes:  <ul>
-    <li>/api/v1.0/about </li>
-    <li>/api/v1.0/precipitation </li>
-    <li>/api/v1.0/stations </li>
-    <li>/api/v1.0/temperature </li></ul></p>
+    <p><b>Available routes:</b>  &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;  &nbsp; &nbsp;&nbsp; &nbsp;  &nbsp; &nbsp;&nbsp;  &nbsp; &nbsp; <b>Descriptions:</b>
+    <ul>
+    <li>/api/v1.0/precipitation  &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp;
+                            Rainfall last year.</li>
+    <li>/api/v1.0/stations        &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;   
+                            The list of active stations.</li>    
+    <li>/api/v1.0/temperatures    &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  
+                            The temperatures from last year.</li>
+    <li> /api/v1.0/temp/start/end   &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+                            Find the minimum, average and maximum temeratures over a given time period from the most active station.</li>
+    </ul></p>
     """)
 
 
@@ -58,12 +65,34 @@ def station():
     stations = list(np.ravel(results))
     return jsonify(stations=stations)
 
-@app.route("/api/v1.0/temperature")
-def temperature():
+@app.route("/api/v1.0/temperatures")
+def temp():
+    last_year = dt.datetime(2017, 8, 23) - dt.timedelta(days=365)
+    temps_last_year = session.query(Measurement.date, Measurement.tobs).filter(Measurement.date>=last_year).all()
+    temps = {date:temp for date, temp in rain_last_year}
+    return jsonify(rain)
+
+
+
+@app.route("/api/v1.0/temp/<start>/<end>")
+def temp_stats(start, end):
+    select = [func.min(Measurement.tobs), func.max(Measurement.tobs), func.avg(Measurement.tobs) ]
     last_year = dt.datetime(2017, 8,23) - dt.timedelta(days=365)
-    temps_last_year = session.query(Measurement.date, Measurement.tobs).filter(Measurement.date>= last_year).filter(Measurement.station == 'USC00519281').all()
-    temps = {date:temp for date, temp in temps_last_year} 
-    return jsonify(temps = temps)
+    if end is False:
+        results = session.query(*select).filter(Measurement.date>=start).all()
+    # if (start and end) != None:
+    #     s = f"\n  start and end  ||  START = {type(start)}  || END = {type(end)}"
+    # elif start and not end:
+    #     s = f"\n  Start only  ||  START = {type(start)}  || END = {type(end)}"
+    # elif end and not start:
+    #     s = f"\n  End only  ||  START = {type(start)}  || END = {type(end)}"  
+    else: 
+        # s = f"\n  No Start or End  ||  START = {type(start)}  || END = {type(end)}"
+        # temps_last_year = session.query(*select).filter(Measurement.date>= last_year).filter(Measurement.station == 'USC00519281').all()
+        results = session.query(*select).filter(Measurement.date>=start).filter(Measurement.date<=end).all()
+    # temps = [row for row in spam]
+    temps = list(np.ravel(results))
+    return jsonify(temps=temps)#, info=s)
 
 if __name__ == "__main__":
     app.run(debug=True)

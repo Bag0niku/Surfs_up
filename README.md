@@ -12,7 +12,7 @@ Analysis of weather in Hawaii
 hawaii.sqlite contains temperature and precipitation data for 9 weather stations across the island of Ouahu, Hawaii from January 1, 2010 to August 23, 2017.  I took my initial data exploration and analysis from the climate_analysis.ipynb file and turned it into an API with python's Flask framework. If you have Flask installed you can run app.py to see the API in action.
 
 ## Challenge
-While Most of the analysis was conducted only on the last year of available data. I did combine every month of june into it's own table and did the same with December. Comparing the two months together the first point noticed is that there is not much difference between the 2. 
+While Most of the analysis was conducted only on the last year of available data. I did combine every month of june into it's own table and did the same with December. Comparing the two months together the first point noticed is that there is not much difference between the two. 
  - Junes temperatures are only slightly higher than December
    - 25%, 50%, 75% and Maximum data points are between 2-4 degrees apart.
    - The average is 3 degrees apart.

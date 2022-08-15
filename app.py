@@ -100,7 +100,7 @@ def temp_stats(start, end):
     else: 
         results = session.query(*select).filter(Measurement.date>=start).filter(Measurement.date<=end).all()
     temps = list(np.ravel(results))
-    temp = {"Minimum" : temps[0], "Average"] :temps[1], "Maximum": temps[2]}
+    temp = {"Minimum" : temps[0], "Average" :temps[1], "Maximum": temps[2]}
     
 
     return jsonify(temps=temp)#, info=s)
@@ -112,8 +112,7 @@ def all_data():
     results = engine.execute(f"SELECT * FROM station;")
     for id, station, name, lat, lon, elev in results:
         d = dict{"name": name, "measurements": dict(), "Latitude":lat, "Longitude":lon, "elevation":elev}
-        place = engine.execute(f"SELECT * FROM measurement WHERE station = '{station};'")
-        for r in results:
+        for r in engine.execute(f"SELECT * FROM measurement WHERE station = '{station};'"):
             d["measurements"][r[2]] = {"prcp": r[3] , "tobs":r[4]}
         all[station] = d
     

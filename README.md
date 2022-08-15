@@ -13,9 +13,17 @@ hawaii.sqlite contains temperature and precipitation data for 9 weather stations
 
 ## Challenge
 While Most of the analysis was conducted only on the last year of available data. I did combine every month of june into it's own table and did the same with December. Comparing the two months together the first point noticed is that there is not much difference between the two. 
+
+![](/Analysis/June_v_December_Temp_stats.png)
+
  - Junes temperatures are only slightly higher than December
    - 25%, 50%, 75% and Maximum data points are between 2-4 degrees apart.
    - The average is 3 degrees apart.
  - December termperatures have a wider range with a minimum of 56 instaed of June's 64.
- After graphing them it is easier to see that average daily temperature is about 5 degrees cooler in December than June.
+ #### After graphing them it is easier to see that average daily temperature is about 5 degrees cooler in December than June.
+ ![](/Analysis/June_v_December_Temp_plot.png)
+
  - The rain data is eerily similar in June and December aswell.
+
+ ![](/Analysis/June_v_December_Rainfall_stats.png)
+ ![](/Analysis/June_v_December_Rainfall_plot.png)
